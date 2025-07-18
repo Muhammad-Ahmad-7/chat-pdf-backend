@@ -6,8 +6,6 @@ openai
 
 python-dotenv
 
-numpy
-scikit-learn
 langchain_text_splitters
 fastapi
 requests
