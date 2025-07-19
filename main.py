@@ -6,7 +6,7 @@ app = FastAPI()
 # Enable CORS for frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Replace with your frontend origin in prod
+    allow_origins=["http://localhost:3000", "https://chat-ai-pdf-ten.vercel.app/"],  # Replace with your frontend origin in prod
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
