@@ -10,3 +10,6 @@ langchain_text_splitters
 fastapi
 requests
 uvicorn
+python-multipart
+pypdf
+faiss-cpu
