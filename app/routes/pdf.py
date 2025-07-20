@@ -3,8 +3,9 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from app.validators.pdf import ChatBody
 from langchain_core.prompts import PromptTemplate
+from app.validators.pdf import ChatBody
+from langchain.schema import Document
 router = APIRouter()
 
 retriever = None
@@ -28,7 +29,8 @@ async def chat_pdf(body:ChatBody):
 async def process_pdf(file_path):
     global retriever
     data = load_pdf(file_path)
-    chunks = chunker(data)
+    docs_list = preprocess_docs(data)
+    chunks = chunker(docs_list)
     retriever = generate_store_retriever(chunks)
 
 
@@ -38,9 +40,20 @@ def load_pdf(file_path):
     return loader.load()
 
 
+def preprocess_docs(docs):
+    doc_list = []
+    for doc in docs:
+        d = Document(
+            page_content=doc.page_content,
+            metadata={"Page Number": doc.metadata['page_label']}
+        )
+        doc_list.append(d)
+    return doc_list
+
+
 # 2. Using RecursiveCharacterSplitter to split the text
 def chunker(docs):
-    splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=20)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     chunks = splitter.split_documents(docs)
     return chunks
 
