@@ -5,6 +5,16 @@ langchain-openai
 openai
 
 python-dotenv
+python-jose
+passlib
+pyJWT
+pydantic
+pydantic_core
+pydantic[email]
+bcrypt==4.3.0
+
+motor
+
 
 langchain_text_splitters
 fastapi
