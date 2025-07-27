@@ -6,7 +6,7 @@ from app.config.utils import success_response
 router = APIRouter()
 
 
-@router.get('/')
+@router.get('/get-user')
 async def get_user(request: Request):
     user_id = request.state.user_id
     
