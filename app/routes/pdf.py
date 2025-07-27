@@ -6,6 +6,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from app.validators.pdf import ChatBody
 from langchain.schema import Document
+import os
 router = APIRouter()
 
 retriever = None
@@ -13,9 +14,13 @@ retriever = None
 
 @router.post('/upload')
 async def upload_pdf(file: UploadFile=File(...)):
+    
+    os.makedirs("uploads", exist_ok=True)  # ✅ Ensure directory exists
+
     file_path = f"uploads/{file.filename}"
     with open(file_path, "wb") as f:
         f.write(await file.read())
+
     await process_pdf(file_path)
     return {"message": "File processed"}
 
